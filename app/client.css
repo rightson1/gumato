@@ -1,0 +1,47 @@
+.npx {
+  @apply px-4 md:px-16;
+}
+.bpx {
+  @apply px-4 md:px-24;
+}
+.fx {
+  @apply flex;
+}
+.fx-btw {
+  @apply flex justify-between;
+}
+.fx--c {
+  @apply flex items-center;
+}
+.fx-c {
+  @apply flex justify-center;
+}
+.fx-btw-c {
+  @apply flex justify-between items-center;
+}
+.blur-btn {
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(0px);
+}
+
+.fx-col {
+  @apply flex flex-col;
+}
+.fx-c-c {
+  @apply flex items-center justify-center;
+}
+.input-blur {
+  @apply border border-foreground/10 bg-foreground/5 backdrop-blur-[7.5px];
+}
+.fx-c {
+  @apply flex justify-center;
+}
+/* text-center md:text-start */
+.mb-tc {
+  @apply text-center md:text-start;
+}
+/* hidden in mobille */
+.hidden-m {
+  @apply hidden md:block;
+}

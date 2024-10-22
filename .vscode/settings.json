@@ -1,0 +1,19 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    "**/.next": true,
+
+    "**/.gitignore": true,
+    //next-env.d.ts ,package lock.json ,yarn lock . readme.md
+    "**/next-env.d.ts": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true,
+    "**/README.md": true
+  }
+}
