@@ -23,11 +23,6 @@ export const firebaseAppId = assertValue(
   process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   "Firebase App ID is not provided"
 );
-// //gemini api
-// export const geminiApiKey = assertValue(
-//   process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-//   "Gemini API Key is not provided"
-// );
 
 export function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
