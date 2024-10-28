@@ -1,4 +1,6 @@
 "use client";
+import { useCustomLoader } from "@/components/functions/custom_loader";
+import { useAuth } from "@/components/provider/AuthProvider";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 const OnboardingSlide = ({
@@ -75,7 +77,8 @@ const OnboardingSlide = ({
 const OnboardingFlow = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
-
+  const { handleGoogle } = useAuth();
+  const { handlePromise } = useCustomLoader();
   const slides = [
     {
       title: "Farm Guard",
@@ -111,11 +114,16 @@ const OnboardingFlow = () => {
   };
 
   const handleSkip = () => {
-    // Handle skip - you can add navigation to main app here
-    console.log("Onboarding skipped");
+    setCurrentIndex(slides.length - 1);
   };
   const gotToDashboard = () => {
-    router.push("/");
+    handlePromise({
+      func: async () => await handleGoogle(),
+      successText: "Welcome to FarmGuard",
+      onSuccess: () => {
+        router.push("/");
+      },
+    });
   };
   return (
     <div className="min-h-screen">

@@ -11,11 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "../ui/separator";
 import Link from "next/link";
+import { useAuth } from "../provider/AuthProvider";
 export const DashboardHeader = ({ userName }: { userName: string }) => (
   <div className="p-4 bg-primary text-background w-full">
     <div className="flex justify-between items-center mb-4 w-full b">
       <div className="w-full fx-btw">
-        <Image src="/logo.svg" width={40} height={40} alt="logo" />
+        <Link href={"/"}>
+          <Image src="/logo.svg" width={40} height={40} alt="logo" />
+        </Link>
         <ProfileCard userName={userName} />
       </div>
     </div>
@@ -23,6 +26,7 @@ export const DashboardHeader = ({ userName }: { userName: string }) => (
 );
 
 export const ProfileCard = ({ userName }: { userName: string }) => {
+  const { user } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
@@ -45,8 +49,8 @@ export const ProfileCard = ({ userName }: { userName: string }) => {
             height={100}
           />
           <div className="fx-col">
-            <span className="ts4 font-semibold ">Rightson Tole</span>
-            <span className="ts6 text-faccent">chari.rightson@gmail.com</span>
+            <span className="ts4 font-semibold ">{user?.displayName}</span>
+            <span className="ts6 text-faccent">{user?.email}</span>
           </div>
         </div>
         <Separator />

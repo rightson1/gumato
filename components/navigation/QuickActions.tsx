@@ -2,8 +2,10 @@
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { useAuth } from "../provider/AuthProvider";
 
 export const QuickActions = () => {
+  const { user } = useAuth();
   const router = useRouter();
   const actions: {
     id: string;
@@ -27,7 +29,14 @@ export const QuickActions = () => {
         router.push("/activities");
       },
     },
-    { id: "share", label: "Share", icon: "🔗", onClick: () => {} },
+    {
+      id: "chat",
+      label: "Chat",
+      icon: "✨",
+      onClick: () => {
+        router.push("/chat");
+      },
+    },
   ];
 
   return (
@@ -35,7 +44,7 @@ export const QuickActions = () => {
       <div className="bg-primary npx pb-8">
         <h1 className="ts1 font-semibold text-background fx--c gap-1">
           <span className="opacity-85">Hello</span>
-          <span>Gumato</span>
+          <span>{user?.displayName}</span>
         </h1>
         <p className="text-background">
           <span className="opacity-75">What would you like to do today?</span>
