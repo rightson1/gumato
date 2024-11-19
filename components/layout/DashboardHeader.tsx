@@ -69,7 +69,7 @@ export const ProfileCard = () => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem>
-          <Link href="/welcome">Sign Out</Link>
+          <Link href="/auth/login">Sign Out</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -51,8 +51,8 @@ const Page = () => {
           description="Enter your email to reset your password, youll receive an email with instructions"
           btnText="Reset Password"
           secondaryBtn={{
-            text: "I forgot password?",
-            link: "/auth/admin/forgot-password",
+            text: "Login?",
+            link: "/auth/login",
           }}
           loading={loading}
         >
