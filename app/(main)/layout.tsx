@@ -21,7 +21,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
   return (
     <div className="">
-      <DashboardHeader userName="Gumato" />
+      <DashboardHeader />
       <div>{children}</div>
       <BottomNav />
     </div>

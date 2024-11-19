@@ -1,11 +1,14 @@
 "use client";
 import { IUser, IUserIdentity, TRole } from "@/types/data.types";
-import axios from "axios";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useCustomLoader } from "../functions/custom_loader";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
@@ -25,6 +28,16 @@ interface AuthContextType {
   role: TRole | "";
   logout: () => void;
   handleGoogle: () => Promise<IUser>;
+  createUserWithEmailAndPassword: (
+    email: string,
+    password: string,
+    displayName: string,
+    role: "farmer" | "vet"
+  ) => Promise<IUser>;
+  loginWithEmailAndPassword: (
+    email: string,
+    password: string
+  ) => Promise<IUser>;
 }
 const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{
@@ -33,11 +46,10 @@ export const AuthProvider: React.FC<{
   const [userIdentity, setUserIdentity] = useState<IUserIdentity | {} | null>(
     {}
   );
-
   const { handlePromise } = useCustomLoader();
   const [user, setUser] = useState<IUser | null>(null);
-  const pathname = usePathname();
   const [role, setRole] = useState<TRole | "">("");
+
   const clearUser = () => {
     setUserIdentity(null);
     setUser(null);
@@ -121,6 +133,63 @@ export const AuthProvider: React.FC<{
       throw new Error(error.message || "Authentication failed");
     }
   };
+  //create user with email and password
+  const handleEmailAndPassword = async (
+    email: string,
+    password: string,
+    displayName: string,
+    role: "farmer" | "vet"
+  ) => {
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // Check if user exists in Firestore
+      const userDoc = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDoc);
+
+      if (!userSnapshot.exists()) {
+        // Create new user document if it doesn't exist
+        const userData: IUser = {
+          uid: user.uid,
+          email: user.email || "",
+          ...defaultUserData,
+          displayName: displayName,
+          photoURL: user.photoURL || "",
+          role: role,
+        };
+
+        await setDoc(userDoc, userData);
+        setUser(userData);
+        setUserIdentity({ uid: user.uid, email: user.email || "" });
+
+        return userData;
+      }
+
+      return userSnapshot.data() as IUser;
+    } catch (error: any) {
+      throw new Error(error.message || "Authentication failed");
+    }
+  };
+  //login with email and password
+  const loginWithEmailAndPassword = async (email: string, password: string) => {
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      // Check if user exists in Firestore
+      const userDoc = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDoc);
+
+      if (!userSnapshot.exists()) {
+        throw new Error("User not found");
+      }
+
+      return userSnapshot.data() as IUser;
+    } catch (error: any) {
+      throw new Error(error.message || "Authentication failed");
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -131,6 +200,8 @@ export const AuthProvider: React.FC<{
         fetchUser,
         logout,
         handleGoogle,
+        createUserWithEmailAndPassword: handleEmailAndPassword,
+        loginWithEmailAndPassword,
       }}
     >
       {children}

@@ -12,7 +12,7 @@
     "**/.gitignore": true,
     //next-env.d.ts ,package lock.json ,yarn lock . readme.md
     "**/next-env.d.ts": true,
-    "**/package-lock.json": true,
+    // "**/package-lock.json": true,
     "**/yarn.lock": true,
     "**/README.md": true
   }

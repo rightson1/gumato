@@ -48,7 +48,7 @@ export default function AddAnimalType() {
   };
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen pb-20 ">
       {/* Header */}
       <div className="bg-teal-800 text-background npx py-2 pt-7  gap-2 relative">
         <Button

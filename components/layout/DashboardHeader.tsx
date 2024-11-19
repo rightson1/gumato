@@ -12,27 +12,30 @@ import {
 import { Separator } from "../ui/separator";
 import Link from "next/link";
 import { useAuth } from "../provider/AuthProvider";
-export const DashboardHeader = ({ userName }: { userName: string }) => (
+export const DashboardHeader = () => (
   <div className="p-4 bg-primary text-background w-full">
     <div className="flex justify-between items-center mb-4 w-full b">
       <div className="w-full fx-btw">
         <Link href={"/"}>
           <Image src="/logo.svg" width={40} height={40} alt="logo" />
         </Link>
-        <ProfileCard userName={userName} />
+        <ProfileCard />
       </div>
     </div>
   </div>
 );
 
-export const ProfileCard = ({ userName }: { userName: string }) => {
+export const ProfileCard = () => {
   const { user } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
         <Avatar>
           <AvatarFallback className="bg-secondary font-semibold">
-            {userName[0]}
+            {user?.displayName
+              ?.split(" ")
+              .map((n) => n[0])
+              .join("")}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

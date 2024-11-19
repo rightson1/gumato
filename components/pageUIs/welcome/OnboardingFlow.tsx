@@ -55,7 +55,7 @@ const OnboardingSlide = ({
             }}
             className="w-full px-4 py-2 bg-teal-700 text-white rounded hover:bg-teal-800"
           >
-            {currentIndex === 2 ? "Start Selling" : "Continue"}
+            {currentIndex === 2 ? "Get Started" : "Continue"}
           </button>
         </div>
 
@@ -117,13 +117,7 @@ const OnboardingFlow = () => {
     setCurrentIndex(slides.length - 1);
   };
   const gotToDashboard = () => {
-    handlePromise({
-      func: async () => await handleGoogle(),
-      successText: "Welcome to FarmGuard",
-      onSuccess: () => {
-        router.push("/");
-      },
-    });
+    router.push("/auth/login");
   };
   return (
     <div className="min-h-screen">

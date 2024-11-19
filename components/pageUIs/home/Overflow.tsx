@@ -1,9 +1,29 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
+import { animal_types } from "@/lib/shared_data";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useEffect, useState } from "react";
 
 export const Overview = () => {
+  const [no_of_animals, setNoOfAnimals] = useState(0);
+  useEffect(() => {
+    const fetchNoOfAnimals = async () => {
+      //count number of documents in livestock collection
+      const docRef = doc(db, "livestock");
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap);
+      if (docSnap.exists()) {
+        setNoOfAnimals(docSnap.data().no_of_animals);
+      } else {
+        console.log("No such document!");
+      }
+    };
+    fetchNoOfAnimals();
+  }, []);
   const stats = [
-    { icon: "📊", label: "Categories", value: 9 },
-    { icon: "🐄", label: "Total Animals", value: 9 },
+    { icon: "📊", label: "Categories", value: animal_types.length },
+    { icon: "🐄", label: "Total Animals", value: no_of_animals },
     { icon: "📝", label: "Upcoming Tasks", value: 9 },
     { icon: "🔔", label: "Notifications", value: 0 },
   ];
