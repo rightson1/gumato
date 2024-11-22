@@ -20,7 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     return <LoadingUI />;
   }
   return (
-    <div className="">
+    <div className="pb-20">
       <DashboardHeader />
       <div>{children}</div>
       <BottomNav />

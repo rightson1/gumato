@@ -4,27 +4,23 @@ import { animal_types } from "@/lib/shared_data";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useEffect, useState } from "react";
+import { useGetLivestock } from "@/hooks/firebase/use_animal";
+import { useGetTasks } from "@/hooks/firebase/use_tasks";
 
 export const Overview = () => {
-  const [no_of_animals, setNoOfAnimals] = useState(0);
-  useEffect(() => {
-    const fetchNoOfAnimals = async () => {
-      //count number of documents in livestock collection
-      const docRef = doc(db, "livestock");
-      const docSnap = await getDoc(docRef);
-      console.log(docSnap);
-      if (docSnap.exists()) {
-        setNoOfAnimals(docSnap.data().no_of_animals);
-      } else {
-        console.log("No such document!");
-      }
-    };
-    fetchNoOfAnimals();
-  }, []);
+  const { data: livestock } = useGetLivestock();
+  const { data: tasks } = useGetTasks();
   const stats = [
     { icon: "📊", label: "Categories", value: animal_types.length },
-    { icon: "🐄", label: "Total Animals", value: no_of_animals },
-    { icon: "📝", label: "Upcoming Tasks", value: 9 },
+    { icon: "🐄", label: "Total Animals", value: livestock?.length || 0 },
+    {
+      icon: "📝",
+      label: "Upcoming Tasks",
+      value:
+        tasks?.filter((task) => {
+          task.status === "pending";
+        }).length || 0,
+    },
     { icon: "🔔", label: "Notifications", value: 0 },
   ];
 

@@ -1,11 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
+import { AnimalType } from "@/lib/shared_data";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export const LivestockList = () => {
-  const livestock = [
-    { type: "Cows", count: 5 },
-    { type: "Goats", count: 4 },
+  const livestock: {
+    type: string;
+    value?: AnimalType;
+  }[] = [
+    { type: "Cows", value: "cow" },
+    { type: "Goats", value: "goat" },
+    { type: "Sheep", value: "sheep" },
   ];
 
   return (
@@ -17,10 +23,13 @@ export const LivestockList = () => {
             <CardHeader className="p-2">
               <Button
                 variant="ghost"
+                asChild
                 className="w-full flex justify-between items-center "
               >
-                <span>{animal.type}</span>
-                <ChevronRight className="h-5 w-5" />
+                <Link href={`/animals/${animal.value}`}>
+                  <span>{animal.type}</span>
+                  <ChevronRight className="h-5 w-5" />
+                </Link>
               </Button>
             </CardHeader>
           </Card>

@@ -94,7 +94,7 @@ const Sidebar = () => {
 
           {!loading &&
             userChats?.length !== 0 &&
-            userChats?.map((chat: any) => (
+            userChats?.map((chat: any, index: number) => (
               <div
                 className={cn(
                   "cursor-pointer flex justify-between items-center p-2 hover:bg-gray-500 hover:bg-opacity-30",
@@ -106,6 +106,7 @@ const Sidebar = () => {
                 onClick={() => {
                   setSelectedChat(chat);
                 }}
+                key={index}
               >
                 <span className="text-sm text-gray-300">
                   {chat.title.split(" ").length <= 3

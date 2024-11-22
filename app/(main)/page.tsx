@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="min-h-screen pb-20 ">
+    <div className="min-h-screen pb-40 ">
       <QuickActions />
       <Overview />
       <LivestockList />

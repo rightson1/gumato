@@ -26,7 +26,7 @@ export const DashboardHeader = () => (
 );
 
 export const ProfileCard = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
@@ -57,19 +57,13 @@ export const ProfileCard = () => {
           </div>
         </div>
         <Separator />
-        <DropdownMenuItem>
-          <Link href="#">Profile and Settings</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href="#">Events And Tickets</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href="#">Hosts Dashboards</Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
 
-        <DropdownMenuItem>
-          <Link href="/auth/login">Sign Out</Link>
+        <DropdownMenuItem
+          onClick={async () => {
+            await logout();
+          }}
+        >
+          Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,5 +1,5 @@
 "use client";
-import { Home, PawPrint, ClipboardList, Settings } from "lucide-react";
+import { Home, PawPrint, ClipboardList, Settings, User } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
@@ -17,8 +17,12 @@ export const BottomNav = () => {
       label: "Animals",
       link: "/animals",
     },
-    { icon: <ClipboardList className="h-6 w-6" />, label: "Tasks", link: "/" },
-    { icon: <Settings className="h-6 w-6" />, label: "Settings", link: "/" },
+    {
+      icon: <ClipboardList className="h-6 w-6" />,
+      label: "Tasks",
+      link: "/tasks",
+    },
+    // { icon: <User className="h-6 w-6" />, label: "Profile", link: "/profile" },
   ];
 
   return (

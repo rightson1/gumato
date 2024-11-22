@@ -26,7 +26,7 @@ export const QuickActions = () => {
       label: "Activities",
       icon: "📋",
       onClick: () => {
-        router.push("/activities");
+        router.push("/tasks");
       },
     },
     {

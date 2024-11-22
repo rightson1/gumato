@@ -24,16 +24,6 @@ const animalTypes = [
     title: "Sheep",
     description: "Add a sheep",
   },
-  {
-    id: "donkey",
-    title: "Donkeys",
-    description: "Add A New donkey",
-  },
-  {
-    id: "pig",
-    title: "Pigs",
-    description: "Add a pig",
-  },
 ];
 
 export default function AddAnimalType() {
