@@ -11,7 +11,7 @@ export const Overview = () => {
   const { data: livestock } = useGetLivestock();
   const { data: tasks } = useGetTasks();
   const stats = [
-    { icon: "📊", label: "Categories", value: animal_types.length },
+    { icon: "📊", label: "Reports", value: animal_types.length },
     { icon: "🐄", label: "Total Animals", value: livestock?.length || 0 },
     {
       icon: "📝",

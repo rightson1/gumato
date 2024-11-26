@@ -1,5 +1,12 @@
 "use client";
-import { Home, PawPrint, ClipboardList, Settings, User } from "lucide-react";
+import {
+  Home,
+  PawPrint,
+  ClipboardList,
+  Settings,
+  User,
+  ChartColumnBig,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
@@ -22,7 +29,11 @@ export const BottomNav = () => {
       label: "Tasks",
       link: "/tasks",
     },
-    // { icon: <User className="h-6 w-6" />, label: "Profile", link: "/profile" },
+    {
+      icon: <ChartColumnBig className="h-6 w-6" />,
+      label: "Reports",
+      link: "/reports",
+    },
   ];
 
   return (
