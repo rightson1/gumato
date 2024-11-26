@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Toaster as Sooner } from "sonner";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -8,6 +8,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from "../provider/AuthProvider";
 const Client = ({ children }: { children: React.ReactNode }) => {
   const [queryClient] = useState(() => new QueryClient());
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => console.log("SW registered:", registration))
+        .catch((error) => console.log("SW registration failed:", error));
+    }
+  }, []);
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClient}>

@@ -38,11 +38,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased fx items-center justify-center`}
         suppressHydrationWarning
       >
         <AuthProvider>
-          <Client>{children}</Client>
+          <Client>
+            <div className="max-w-[500px] w-full ">{children}</div>
+          </Client>
         </AuthProvider>
       </body>
     </html>

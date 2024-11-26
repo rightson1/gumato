@@ -30,3 +30,9 @@
     transform: rotate(360deg);
   }
 }
+.app-container {
+  @apply w-full fx justify-center items-center;
+}
+.app-w {
+  @apply w-full  md:max-w-[500px];
+}

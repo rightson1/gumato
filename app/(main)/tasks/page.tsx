@@ -88,7 +88,7 @@ export default function TasksPage() {
               Add Task
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-[90vw] md:max-w-[600px] max-h-[70vh] flex flex-col px-0">
+          <DialogContent className="max-w-[90vw] md:max-w-[600px] max-h-[70vh] flex flex-col px-0 md:p-6">
             <DialogHeader>
               <DialogTitle>Create New Task</DialogTitle>
             </DialogHeader>

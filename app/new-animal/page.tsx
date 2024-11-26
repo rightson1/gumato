@@ -87,14 +87,16 @@ export default function AddAnimalType() {
       </div>
 
       {/* Footer Button */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
-        <Button
-          className="w-full bg-teal-800 hover:bg-teal-700 text-white"
-          onClick={handleSubmit}
-          disabled={!selectedAnimal}
-        >
-          Lets Go
-        </Button>
+      <div className="fixed bottom-0 left-0  fx w-full justify-center">
+        <div className="right-0 p-4 bg-white border-t md:max-w-[500px] w-full">
+          <Button
+            className="w-full bg-teal-800 hover:bg-teal-700 text-white"
+            onClick={handleSubmit}
+            disabled={!selectedAnimal}
+          >
+            Lets Go
+          </Button>
+        </div>
       </div>
     </div>
   );

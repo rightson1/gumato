@@ -26,22 +26,24 @@ export const BottomNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t">
-      <nav className="flex justify-around p-4">
-        {navItems.map(({ icon, label, active, link }) => (
-          <Button
-            key={label}
-            variant="ghost"
-            className={`flex flex-col items-center gap-1 ${
-              active ? "text-teal-800" : "text-gray-500"
-            }`}
-            onClick={() => router.push(link)}
-          >
-            {icon}
-            <span className="text-xs">{label}</span>
-          </Button>
-        ))}
-      </nav>
+    <div className="fixed bottom-0 left-0 right-0  border-t  flex justify-center">
+      <div className="app-w w-full max-w-[500px] bg-white">
+        <nav className="flex justify-around p-4">
+          {navItems.map(({ icon, label, active, link }) => (
+            <Button
+              key={label}
+              variant="ghost"
+              className={`flex flex-col items-center gap-1 ${
+                active ? "text-teal-800" : "text-gray-500"
+              }`}
+              onClick={() => router.push(link)}
+            >
+              {icon}
+              <span className="text-xs">{label}</span>
+            </Button>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 };
