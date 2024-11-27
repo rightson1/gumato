@@ -47,12 +47,15 @@ export default function TasksPage() {
     priority: "all",
     category: "all",
   });
-  const { data: tasks, isLoading } = useGetTasks();
+  const { user } = useAuth();
+  const { data: tasks, isLoading } = useGetTasks({
+    userId: user?.uid!,
+  });
   const { mutateAsync: addTask, ...adding } = useAddTask();
   const { mutateAsync: updateTask } = useUpdateTask();
   const { mutateAsync: deleteTask } = useDeleteTask();
   const { handlePromise, modalOpen, setModalOpen } = useCustomLoader();
-  const { user } = useAuth();
+
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskSchema),
     defaultValues: {

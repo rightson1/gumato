@@ -25,6 +25,7 @@ import {
 } from "./inputs";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
+import { useAuth } from "@/components/provider/AuthProvider";
 type FormValues = z.infer<typeof LivestockSchema>;
 interface ILivestockContext {
   form: UseFormReturn<FormValues>;
@@ -34,6 +35,8 @@ export const NewAnimalPageUI: React.FC = () => {
   const params = useParams<{ animal: AnimalType }>();
   const animalType = params.animal;
   const { handlePromise, loading } = useCustomLoader();
+  const { user } = useAuth();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(LivestockSchema),
     criteriaMode: "all",
@@ -58,6 +61,7 @@ export const NewAnimalPageUI: React.FC = () => {
       lactationNumber: 0,
       parents: { sire: "", dam: "" },
       lastShearingDate: "",
+      farmId: user?.uid!,
     },
   });
   const {

@@ -13,14 +13,20 @@ import { auth, db } from "@/lib/firebase";
 import { BaseAnimal, Cow, Goat, Sheep } from "@/lib/schemas/livestock";
 import { AnimalType } from "@/lib/shared_data";
 //export number of livestock
-export const useGetLivestock = () => {
+export const useGetLivestock = ({ farmId }: { farmId?: string }) => {
   return useQuery<BaseAnimal[]>({
     queryKey: ["livestock"],
     queryFn: async () => {
-      const querySnapshot = await getDocs(collection(db, "livestock"));
+      // const querySnapshot = await getDocs(collection(db, "livestock"));
+      // const data = querySnapshot.docs.map((doc) => doc.data() as BaseAnimal);
+      // return data;
+      const querySnapshot = await getDocs(
+        query(collection(db, "livestock"), where("farmId", "==", farmId))
+      );
       const data = querySnapshot.docs.map((doc) => doc.data() as BaseAnimal);
-      return data;
+      return data || [];
     },
+    enabled: !!farmId,
   });
 };
 
@@ -69,6 +75,21 @@ export const useDeleteAnimal = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       await deleteDoc(doc(db, "livestock", id));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["livestock"],
+      });
+    },
+  });
+};
+
+/// update animal
+export const useUpdateAnimal = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: BaseAnimal & { id: string }) => {
+      await setDoc(doc(db, "livestock", data.id), data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

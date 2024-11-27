@@ -9,6 +9,7 @@ import Link from "next/link";
 import { AnimalType } from "@/lib/shared_data";
 import { useParams } from "next/navigation";
 import { useGetLivestock } from "@/hooks/firebase/use_animal";
+import { useAuth } from "@/components/provider/AuthProvider";
 
 interface Animal {
   id: AnimalType;
@@ -39,7 +40,10 @@ const animals: Animal[] = [
 ];
 
 export default function AnimalsPage() {
-  const { data: livestock } = useGetLivestock();
+  const { user } = useAuth();
+  const { data: livestock } = useGetLivestock({
+    farmId: user?.uid,
+  });
   return (
     <div className="min-h-screen ">
       <div className="px-4 pb-6 bg-primary fx-col gap-2">

@@ -1,4 +1,5 @@
 "use client";
+
 import {
   BarChart,
   Bar,
@@ -14,18 +15,31 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartTooltip,
+} from "@/components/ui/chart";
 
 import { useGetTasks } from "@/hooks/firebase/use_tasks";
 import {
   useGetLivestock,
   useGetLivestockByType,
 } from "@/hooks/firebase/use_animal";
+import { useAuth } from "@/components/provider/AuthProvider";
+
 const Page = () => {
-  const { data: livestock } = useGetLivestock();
+  const { user } = useAuth();
+  const { data: livestock } = useGetLivestock({
+    farmId: user?.uid,
+  });
   const { data: cowData } = useGetLivestockByType("cow");
-  const { data: tasks } = useGetTasks();
+  const { data: tasks } = useGetTasks({
+    userId: user?.uid!,
+  });
 
   const animalDistribution = [
     {
@@ -61,28 +75,44 @@ const Page = () => {
     }, []) || [];
 
   return (
-    <div className="min-h-screen pb-20 p-4">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+    <div className="min-h-screen pb-20 p-4 max-w-[500px] mx-auto">
+      <div className="flex flex-col gap-4">
         <Card>
           <CardHeader>
             <CardTitle>Livestock Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={animalDistribution}
-                  dataKey="count"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  fill="#8884d8"
-                  label
-                />
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+            <ChartContainer
+              config={{
+                Cows: { label: "Cows", color: "hsl(var(--chart-1))" },
+                Goats: { label: "Goats", color: "hsl(var(--chart-2))" },
+                Sheep: { label: "Sheep", color: "hsl(var(--chart-3))" },
+              }}
+              className="h-[300px] w-full"
+            >
+              <ResponsiveContainer width="100%" aspect={1.5}>
+                <PieChart>
+                  <Pie
+                    data={animalDistribution}
+                    dataKey="count"
+                    nameKey="name"
+                    cx="50%"
+                    cy="40%"
+                    fill="var(--color-Cows)"
+                    label
+                  >
+                    {animalDistribution.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={`var(--color-${entry.name})`}
+                      />
+                    ))}
+                  </Pie>
+                  <ChartTooltip />
+                  <ChartLegend />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
 
@@ -91,15 +121,27 @@ const Page = () => {
             <CardTitle>Health Status Overview</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={healthDistribution}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="status" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
+            <ChartContainer
+              config={{
+                count: { label: "Count", color: "hsl(var(--chart-4))" },
+              }}
+              className="h-[300px] w-full"
+            >
+              <ResponsiveContainer width="100%" aspect={1.5}>
+                <BarChart data={healthDistribution}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="status"
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                  />
+                  <YAxis />
+                  <ChartTooltip />
+                  <Bar dataKey="count" fill="var(--color-count)" />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
 
@@ -108,21 +150,28 @@ const Page = () => {
             <CardTitle>Task Status</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={taskStatusData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  fill="#8884d8"
-                  label
-                />
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+            <ChartContainer
+              config={{
+                value: { label: "Value", color: "hsl(var(--chart-5))" },
+              }}
+              className="h-[300px] w-full"
+            >
+              <ResponsiveContainer width="100%" aspect={1.5}>
+                <PieChart>
+                  <Pie
+                    data={taskStatusData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="40%"
+                    fill="var(--color-value)"
+                    label
+                  />
+                  <ChartTooltip />
+                  <ChartLegend />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
 
@@ -131,15 +180,27 @@ const Page = () => {
             <CardTitle>Weight Distribution (Cows)</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={cowData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Area type="monotone" dataKey="weight" fill="#8884d8" />
-              </AreaChart>
-            </ResponsiveContainer>
+            <ChartContainer
+              config={{
+                weight: { label: "Weight", color: "hsl(var(--chart-6))" },
+              }}
+              className="h-[300px] w-full"
+            >
+              <ResponsiveContainer width="100%" aspect={1.5}>
+                <AreaChart data={cowData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <ChartTooltip />
+                  <Area
+                    type="monotone"
+                    dataKey="weight"
+                    fill="var(--color-weight)"
+                    stroke="var(--color-weight)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
       </div>

@@ -6,6 +6,9 @@ const BaseAnimalSchema = z.object({
   gender: z.enum(["male", "female"]),
   breed: z.string().min(2, "Breed must be specified"),
   dateOfBirth: z.string(),
+  farmId: z.string({
+    message: "Farm ID must be specified",
+  }),
 
   // Health and Physical Attributes
   weight: z.number().min(0, "Weight must be a positive number"),
@@ -22,7 +25,9 @@ const BaseAnimalSchema = z.object({
   animal_type: z.enum(["cow", "goat", "sheep"]),
 
   // Additional Information
-  image: z.instanceof(File).optional(),
+  image:
+    //file or string
+    z.union([z.string(), z.instanceof(File)]).optional(),
   notes: z.string().optional(),
   parents: z.object({
     sire: z.string().optional(),
@@ -77,8 +82,10 @@ type Sheep = Omit<z.infer<typeof SheepSchema>, "image"> & {
 
 // Combined livestock type
 type Livestock = Cow | Goat | Sheep;
+//livestockedit type with image as string or File
+type LivestockEdit = Cow | Goat | (Sheep & { image: string | File });
 
-export type { BaseAnimal, Cow, Goat, Sheep, Livestock };
+export type { BaseAnimal, Cow, Goat, Sheep, Livestock, LivestockEdit };
 
 export const healthRecordSchema = z.object({
   condition: z.string().min(2, "Condition must be at least 2 characters"),

@@ -6,10 +6,16 @@ import { db } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import { useGetLivestock } from "@/hooks/firebase/use_animal";
 import { useGetTasks } from "@/hooks/firebase/use_tasks";
+import { useAuth } from "@/components/provider/AuthProvider";
 
 export const Overview = () => {
-  const { data: livestock } = useGetLivestock();
-  const { data: tasks } = useGetTasks();
+  const { user } = useAuth();
+  const { data: livestock } = useGetLivestock({
+    farmId: user?.uid,
+  });
+  const { data: tasks } = useGetTasks({
+    userId: user?.uid!,
+  });
   const stats = [
     { icon: "📊", label: "Reports", value: animal_types.length },
     { icon: "🐄", label: "Total Animals", value: livestock?.length || 0 },
@@ -21,7 +27,14 @@ export const Overview = () => {
           task.status === "pending";
         }).length || 0,
     },
-    { icon: "🔔", label: "Notifications", value: 0 },
+    {
+      icon: "🔔",
+      label: "Notifications",
+      value:
+        tasks?.filter((task) => {
+          return task.status !== "completed" && task.status !== "cancelled";
+        }).length || 0,
+    },
   ];
 
   return (

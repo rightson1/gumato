@@ -7,6 +7,8 @@ import {
   doc,
   getDocs,
   updateDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { ITask, TaskFormValues } from "@/lib/schemas/tasks";
@@ -56,17 +58,15 @@ export const useDeleteTask = () => {
   });
 };
 
-export const useGetTasks = () => {
+export const useGetTasks = ({ userId }: { userId: string }) => {
   return useQuery<ITask[]>({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const querySnapshot = await getDocs(collection(db, "tasks"));
-      return querySnapshot.docs.map((doc) => {
-        return {
-          id: doc.id,
-          ...doc.data(),
-        } as ITask;
-      });
+      const querySnapshot = await getDocs(
+        query(collection(db, "tasks"), where("userId", "==", userId))
+      );
+      const data = querySnapshot.docs.map((doc) => doc.data() as ITask);
+      return data || [];
     },
   });
 };

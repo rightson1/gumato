@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   CornerUpLeftIcon,
   Trash2,
+  Pen,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useDeleteAnimal, useGetAnimal } from "@/hooks/firebase/use_animal";
@@ -22,6 +23,7 @@ import { VaccinationHistory } from "@/components/pageUIs/animal/vaccination";
 import { HealthRecords } from "@/components/pageUIs/animal/health";
 import { useCustomLoader } from "@/components/functions/custom_loader";
 import NotFoundUI from "@/components/NotFoundUI";
+import { EditAnimalPageUI } from "@/components/pageUIs/edit_animal/edit_animals";
 
 const AnimalDetailsPage = () => {
   const params = useParams<{ id: string }>();
@@ -74,14 +76,6 @@ const AnimalDetailsPage = () => {
             {animal.name || `${animal.animal_type} ${animal.tagNumber}`}
           </h1>
         </div>
-        <Button
-          variant={"ghost"}
-          asChild
-          className="hover:bg-transparent  hover:text-background"
-          onClick={() => setIsEditModalOpen(true)}
-        >
-          <MoreVertical size={20} />
-        </Button>
         <div className="absolute pointer-events-none -left-5 -bottom-5 rounded-full bg-background/10 p-10"></div>
         <div className="absolute -right-0 -bottom-0 bg-background/10 px-5 py-7"></div>
       </div>
@@ -103,21 +97,32 @@ const AnimalDetailsPage = () => {
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle className="text-lg  ">Primary Information</CardTitle>
-            <Button
-              className="text-destructive"
-              variant={"outline"}
-              size={"sm"}
-              onClick={() => {
-                handlePromise({
-                  func: async () => await deleteAnimal(params.id),
-                  onSuccess: () => {
-                    router.push("/");
-                  },
-                });
-              }}
-            >
-              <Trash2 size={14} />
-            </Button>
+            <div className="fx gap-2">
+              <Button
+                className="text-destructive"
+                variant={"outline"}
+                size={"sm"}
+                onClick={() => {
+                  handlePromise({
+                    func: async () => await deleteAnimal(params.id),
+                    onSuccess: () => {
+                      router.push("/");
+                    },
+                  });
+                }}
+              >
+                <Trash2 size={14} />
+              </Button>
+              <Button
+                className="text-destructive"
+                variant={"outline"}
+                size={"sm"}
+              >
+                <Link href={`/animal/edit/${params.id}`}>
+                  <Pen size={14} />
+                </Link>
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between">
